@@ -1,17 +1,43 @@
-import { categories, audioList } from "./constant.js";
-import { setttingAni,streakAnimation, spawnBloodSplatter, shakeContainer, con_animation, key_animation, hang_animation, pop_up_animation, bounce_effect, wrong_effect } from "./animation.js";
+import { categories, audioList } from "./assets/constant.js";
+import {
+  setttingAni,
+  streakAnimation,
+  spawnBloodSplatter,
+  shakeContainer,
+  con_animation,
+  key_animation,
+  hang_animation,
+  pop_up_animation,
+  bounce_effect,
+  wrong_effect,
+} from "./assets/animation.js";
+
 import { fetchRandomWordAndHint } from "./api.js";
 
-let getbutton = true, music = false, sound = false,setShow=true,currentCategory = {};
-let randWord = "", previousGuess = "", hint = "", difficulty = "",lastChar="",synonym="";
-let correctGuesses = 0, falseGuess = 8, myScore = 0, guessStreak = 0, pickedWord = [],unFilteredHint = [];
+let getbutton = true,
+  music = false,
+  sound = false,
+  setShow = true,
+  currentCategory = {};
+let randWord = "",
+  previousGuess = "",
+  hint = "",
+  difficulty = "",
+  lastChar = "",
+  synonym = "";
+let correctGuesses = 0,
+  falseGuess = 8,
+  myScore = 0,
+  guessStreak = 0,
+  pickedWord = [],
+  unFilteredHint = [];
 let category = ["animals", "birds", "indian", "fruits", "vegetables"];
 let { click, start, bg, shabash, wrong, over, correct } = audioList;
 const alphabets = "abcdefghijklmnopqrstuvwxyz".split("");
 
 const elements = {
-  overlay: document.getElementById('overlay'),
-  pcount: document.querySelector('.count'),
+  overlay: document.getElementById("overlay"),
+  pcount: document.querySelector(".count"),
   selector: document.getElementById("selector"),
   container: document.getElementById("container"),
   keyboard: document.getElementById("keyboard"),
@@ -44,19 +70,21 @@ function init() {
   elements.playAgain.addEventListener("click", resetGame);
   elements.music.addEventListener("click", toggleMusic);
   elements.stopSoundsButton.addEventListener("click", toggleSounds);
-  elements.settingBtn.addEventListener("click", ()=>toggleSettings());
-  elements.diffButtons.forEach(button => button.addEventListener("click", (e) => startGame(e.target.dataset.mode)));
+  elements.settingBtn.addEventListener("click", () => toggleSettings());
+  elements.diffButtons.forEach((button) =>
+    button.addEventListener("click", (e) => startGame(e.target.dataset.mode))
+  );
   setupSounds();
 }
 
-document.addEventListener('visibilitychange', function() {
+document.addEventListener("visibilitychange", function () {
   document.hidden ? bg.pause() : bg.play();
 });
 
 function startScreen() {
   elements.selector.style.display = "none";
   document.querySelector("#h1").classList.remove("hide");
-  elements.diffButtons.forEach(button => button.classList.remove("hide"));
+  elements.diffButtons.forEach((button) => button.classList.remove("hide"));
   playSound(start, 0.8);
   bg.play();
 }
@@ -88,9 +116,9 @@ async function pickWord() {
     const idx = rand(currentCategory.words.length);
     randWord = currentCategory.words[idx];
     hint = currentCategory.hints[idx];
-    if (pickedWord.includes(randWord)){ 
+    if (pickedWord.includes(randWord)) {
       if (pickedWord.length >= 85) {
-        difficulty = "hard" ;
+        difficulty = "hard";
         return pickWord();
       } else {
         return pickWord();
@@ -107,8 +135,12 @@ async function pickWord() {
 
 async function fetchWordFromAPI() {
   try {
-    elements.overlay.style.display = 'flex';
-    const { randomWord, definition: apiHint, synonyms } = await fetchRandomWordAndHint();
+    elements.overlay.style.display = "flex";
+    const {
+      randomWord,
+      definition: apiHint,
+      synonyms,
+    } = await fetchRandomWordAndHint();
     randWord = randomWord.toLowerCase();
     synonym = synonyms;
     hint = apiHint;
@@ -117,19 +149,19 @@ async function fetchWordFromAPI() {
     randWord = "default";
     hint = "No hint available";
   } finally {
-    elements.overlay.style.display = 'none';
+    elements.overlay.style.display = "none";
   }
 }
 
 function processHint() {
   if (hint.includes(randWord) || hint.includes(capitalize(randWord))) {
     hint = formatHint(hint, 149);
-    hint = hint.replace(new RegExp(`\\b${randWord}\\b`, 'gi'), '[hidden]');
+    hint = hint.replace(new RegExp(`\\b${randWord}\\b`, "gi"), "[hidden]");
   }
-  if (hint.includes(':')) {
-    hint = hint.split(':').slice(1).join(':').trim() || "No hint available";
+  if (hint.includes(":")) {
+    hint = hint.split(":").slice(1).join(":").trim() || "No hint available";
   }
-  if (hint.trim() === '.') {
+  if (hint.trim() === ".") {
     hint = "No hint found :( Try another word by clicking play again!";
   }
 }
@@ -139,7 +171,7 @@ function displayWord() {
   const correct = document.createElement("ul");
   correct.id = "my-word";
 
-  randWord.split("").forEach(char => {
+  randWord.split("").forEach((char) => {
     const guess = document.createElement("li");
     guess.className = "guess";
     guess.innerHTML = char === "-" ? "-" : "_";
@@ -191,7 +223,7 @@ function processWrongGuess(element, guess) {
 
 function displayScore(disScore) {
   if (guessStreak >= 3 && disScore) {
-    myScore += (guessStreak * 50);
+    myScore += guessStreak * 50;
     elements.pcount.innerHTML = guessStreak;
     streakAnimation();
   }
@@ -199,7 +231,9 @@ function displayScore(disScore) {
 }
 
 function endGame(won) {
-  elements.message.innerHTML = won ? "Congratulations! You've won!" : `Game Over! The correct word was ${capitalize(randWord)}`;
+  elements.message.innerHTML = won
+    ? "Congratulations! You've won!"
+    : `Game Over! The correct word was ${capitalize(randWord)}`;
   disableAllButtons();
   if (won) {
     confettiAnimation();
@@ -217,10 +251,12 @@ function toggleSettings() {
   if (setShow) {
     elements.settingCon.style.display = "flex";
   } else {
-    setTimeout(() => { elements.settingCon.style.display = "none"; }, 2000);
+    setTimeout(() => {
+      elements.settingCon.style.display = "none";
+    }, 2000);
   }
   setttingAni();
-  setShow=!setShow;
+  setShow = !setShow;
 }
 
 function toggleHint(show) {
@@ -228,9 +264,11 @@ function toggleHint(show) {
   playSound(click, 0.153);
   if (show) {
     elements.output.innerHTML = hint;
-    difficulty==="hard"?elements.synDisplay.innerText = `Synonyms : ${synonym}`:elements.synDisplay.style.display="none";
+    difficulty === "hard"
+      ? (elements.synDisplay.innerText = `Synonyms : ${synonym}`)
+      : (elements.synDisplay.style.display = "none");
     pop_up_animation();
-    myScore = (myScore === 0 ? myScore = 0 : myScore -= 10);
+    myScore = myScore === 0 ? (myScore = 0) : (myScore -= 10);
     displayScore(false);
   }
 }
@@ -263,7 +301,7 @@ function toggleSounds() {
 }
 
 function muteAllSounds() {
-  Object.values(audioList).forEach(audio => {
+  Object.values(audioList).forEach((audio) => {
     if (audio !== bg) {
       audio.pause();
       audio.currentTime = 0;
@@ -273,11 +311,16 @@ function muteAllSounds() {
 }
 
 function drawHangman() {
-  ctx.clearRect(0, 0, elements.hangmanCanvas.width, elements.hangmanCanvas.height);
+  ctx.clearRect(
+    0,
+    0,
+    elements.hangmanCanvas.width,
+    elements.hangmanCanvas.height
+  );
   ctx.lineWidth = 2;
   ctx.strokeStyle = "white";
   elements.countBox.innerHTML = falseGuess;
-  myScore = (myScore === 0 ? myScore = 0 : myScore -= 50);
+  myScore = myScore === 0 ? (myScore = 0) : (myScore -= 50);
   guessStreak = 0;
   displayScore(false);
 
@@ -315,7 +358,7 @@ function drawHangman() {
     ctx.arc(90, 77, 7, 0, 2 * Math.PI);
     ctx.stroke();
 
-    for (let i = 0; i < (falseGuess+1) * 2; i++) {
+    for (let i = 0; i < (falseGuess + 1) * 2; i++) {
       spawnBloodSplatter();
     }
   }
@@ -342,7 +385,7 @@ function drawHangman() {
   if (falseGuess <= 0) {
     endGame(false);
   }
-};
+}
 
 function playSound(audio, currentTime = 0) {
   audio.currentTime = currentTime;
@@ -360,14 +403,14 @@ function updateCorrectGuess(char, i, element) {
   myScore += 100;
   displayScore(true);
   playSound(correct, 0.155);
-  lastChar=char;
+  lastChar = char;
 }
 
 function initializeKeyboard() {
   if (getbutton) {
     const letters = document.createElement("ul");
     letters.id = "alphabet";
-    alphabets.forEach(letter => {
+    alphabets.forEach((letter) => {
       const button = document.createElement("button");
       button.id = `letter-${letter}`;
       button.innerHTML = letter.toUpperCase();
@@ -392,10 +435,12 @@ function confettiAnimation() {
   }
 
   function createConfetti(particleCount, originX) {
-    confetti(Object.assign({}, defaults, {
-      particleCount,
-      origin: { x: originX, y: Math.random() - 0.2 },
-    }));
+    confetti(
+      Object.assign({}, defaults, {
+        particleCount,
+        origin: { x: originX, y: Math.random() - 0.2 },
+      })
+    );
   }
 
   const interval = setInterval(() => {
@@ -413,21 +458,27 @@ function confettiAnimation() {
 }
 
 function disableAllButtons() {
-  alphabets.forEach(letter => document.getElementById(`letter-${letter}`).disabled = true);
+  alphabets.forEach(
+    (letter) => (document.getElementById(`letter-${letter}`).disabled = true)
+  );
 }
 
 function formatHint(text, maxLength) {
-  const sentences = text.split('.').filter(sentence => sentence.trim().length > 0);
-  let hint = sentences[0].trim() + '.';
+  const sentences = text
+    .split(".")
+    .filter((sentence) => sentence.trim().length > 0);
+  let hint = sentences[0].trim() + ".";
 
   if (sentences.length > 1) {
-    const secondSentence = sentences[1].trim() + '.';
-    if ((hint + ' ' + secondSentence).length <= maxLength) {
-      hint += ' ' + secondSentence;
+    const secondSentence = sentences[1].trim() + ".";
+    if ((hint + " " + secondSentence).length <= maxLength) {
+      hint += " " + secondSentence;
     }
   }
 
-  return hint.length > maxLength ? hint.slice(0, maxLength).trim() + '...' : hint;
+  return hint.length > maxLength
+    ? hint.slice(0, maxLength).trim() + "..."
+    : hint;
 }
 
 function capitalize(str) {
@@ -439,8 +490,13 @@ function rand(len) {
 }
 
 function resetGame() {
-  ctx.clearRect(0, 0, elements.hangmanCanvas.width, elements.hangmanCanvas.height);
-  correctGuesses = 0, falseGuess = 8;
+  ctx.clearRect(
+    0,
+    0,
+    elements.hangmanCanvas.width,
+    elements.hangmanCanvas.height
+  );
+  (correctGuesses = 0), (falseGuess = 8);
   myScore += 1;
   previousGuess = "";
   elements.message.innerHTML = "";

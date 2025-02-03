@@ -1,129 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Play Hangman Game Online | Classic Word Guessing Fun</title>
+    <meta
+      name="description"
+      content="Play the classic Hangman game online for free! Test your vocabulary and guessing skills in this fun and challenging word game. Start playing now!"
+    />
+    <meta
+      name="keywords"
+      content="Hangman game online, free word game, vocabulary game, word guessing game, play Hangman, classic games online"
+    />
+    <meta name="author" content="Samkit Jain" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Play Hangman Game Online | Classic Word Guessing Fun</title>
-  <meta name="description" content="Play the classic Hangman game online for free! Test your vocabulary and guessing skills in this fun and challenging word game. Start playing now!" />
-  <meta name="keywords" content="Hangman game online, free word game, vocabulary game, word guessing game, play Hangman, classic games online" />
-  <meta name="author" content="Samkit Jain" />
+    <!-- Open Graph Meta Tags -->
+    <meta
+      property="og:title"
+      content="Play Hangman Game Online | Classic Word Guessing Fun"
+    />
+    <meta
+      property="og:description"
+      content="Enjoy the classic Hangman game online. Test your word knowledge and guessing skills. Start playing for free!"
+    />
+    <meta
+      property="og:image"
+      content="https://github.com/TheRealSamkit/HangMan_Game/assets/favicon.png"
+    />
+    <meta
+      property="og:url"
+      content="https://therealsamkit.github.io/HangMan_Game/"
+    />
+    <meta property="og:type" content="website" />
 
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Play Hangman Game Online | Classic Word Guessing Fun" />
-  <meta property="og:description" content="Enjoy the classic Hangman game online. Test your word knowledge and guessing skills. Start playing for free!" />
-  <meta property="og:image" content="https://your-github-page-url/assets/favicon.png" />
-  <meta property="og:url" content="https://your-github-username.github.io/HangMan_Game/" />
-  <meta property="og:type" content="website" />
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Play Hangman Game Online | Classic Word Guessing Fun"
+    />
+    <meta
+      name="twitter:description"
+      content="Challenge yourself with the classic Hangman word guessing game. Play now for free!"
+    />
+    <meta
+      name="twitter:image"
+      content="https://github.com/TheRealSamkit/HangMan_Game/assets/favicon.png"
+    />
 
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Play Hangman Game Online | Classic Word Guessing Fun" />
-  <meta name="twitter:description" content="Challenge yourself with the classic Hangman word guessing game. Play now for free!" />
-  <meta name="twitter:image" content="https://your-github-page-url/assets/favicon.png" />
+    <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="hang.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
-  <link rel="stylesheet" href="hang.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@300;400;700&display=swap" rel="stylesheet" />
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "Hangman Game Online",
+        "description": "Play the classic Hangman game online and test your vocabulary skills.",
+        "author": {
+          "@type": "Person",
+          "name": "Samkit Jain"
+        },
+        "image": "https://github.com/TheRealSamkit/HangMan_Game/assets/favicon.png",
+        "url": "https://TheRealSamkit.github.io/HangMan_Game/",
+        "publisher": {
+          "@type": "Organization",
+          "name": "GitHub Pages"
+        }
+      }
+    </script>
+  </head>
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Game",
-    "name": "Hangman Game Online",
-    "description": "Play the classic Hangman game online and test your vocabulary skills.",
-    "author": {
-      "@type": "Person",
-      "name": "Samkit Jain"
-    },
-    "image": "https://github.com/TheRealSamkit/HangMan_Game/assets/favicon.png",
-    "url": "https://TheRealSamkit.github.io/HangMan_Game/",
-    "publisher": {
-      "@type": "Organization",
-      "name": "GitHub Pages"
-    }
-  }
-  </script>
-</head>
-
-<body>
-  <main class="main">
-    <h1 class="title">Hangman Game! <i class="fa-solid fa-gear gear"></i></h1>
-    <div class="settings">
-      <i class="fa-solid fa-volume-high -sound" id="stopSounds" title="Toggle sound"></i>
-      <i class="fa-solid fa-music -music" id="music" title="Toggle music"></i>
-    </div>
-    <img src="assets/favicon.png" alt="Hangman Game Logo" class="logo" title="Hangman Game Logo" /> 
-    <div class="diff">
-      <button type="button" id="selector" class="playAgain selector hide" title="Start a new Hangman game">
-        Start Game
-      </button>
-      <h1 style="color: #fff;" class="hide" id="h1">Select Difficulty</h1>
-      <button type="button" data-mode="easy" id="easyBtn" class="playAgain selector ms hide"
-        title="Choose easy difficulty">
-        Easy
-      </button>
-      <button type="button" id="hardBtn" data-mode="hard" class="playAgain selector ms hide"
-        title="Choose hard difficulty">
-        Hard
-      </button>
-    </div>
-    <div class="container" id="container">
-      <div class="flex">
-        <div class="hangman">
-          <canvas id="hangMan" class="hang" title="Visual representation of the Hangman game"></canvas>
-          <p title="Displays the current score" class="txt Score">Score : <span id="score">0</span></p>
-          <p title="Displays the remaining guesses" class="txt remGue">Remaining guesses : <span
-              id="remainingGuesses">8</span></p>
+  <body>
+    <main class="main">
+      <h1 class="title">Hangman Game! <i class="fa-solid fa-gear gear"></i></h1>
+      <div class="settings">
+        <i
+          class="fa-solid fa-volume-high -sound"
+          id="stopSounds"
+          title="Toggle sound"
+        ></i>
+        <i class="fa-solid fa-music -music" id="music" title="Toggle music"></i>
+      </div>
+      <img
+        src="assets/favicon.png"
+        alt="Hangman Game Logo"
+        class="logo"
+        title="Hangman Game Logo"
+      />
+      <div class="diff">
+        <button
+          type="button"
+          id="selector"
+          class="playAgain selector hide"
+          title="Start a new Hangman game"
+        >
+          Start Game
+        </button>
+        <h1 style="color: #fff" class="hide" id="h1">Select Difficulty</h1>
+        <button
+          type="button"
+          data-mode="easy"
+          id="easyBtn"
+          class="playAgain selector ms hide"
+          title="Choose easy difficulty"
+        >
+          Easy
+        </button>
+        <button
+          type="button"
+          id="hardBtn"
+          data-mode="hard"
+          class="playAgain selector ms hide"
+          title="Choose hard difficulty"
+        >
+          Hard
+        </button>
+      </div>
+      <div class="container" id="container">
+        <div class="flex">
+          <div class="hangman">
+            <canvas
+              id="hangMan"
+              class="hang"
+              title="Visual representation of the Hangman game"
+            ></canvas>
+            <p title="Displays the current score" class="txt Score">
+              Score : <span id="score">0</span>
+            </p>
+            <p title="Displays the remaining guesses" class="txt remGue">
+              Remaining guesses : <span id="remainingGuesses">8</span>
+            </p>
+          </div>
+          <div class="game">
+            <div
+              class="word"
+              id="blank"
+              title="Displays the current word with blanks for unguessed letters"
+            ></div>
+            <div
+              class="keyboard"
+              id="keyboard"
+              title="Interactive keyboard for letter selection"
+            ></div>
+          </div>
         </div>
-        <div class="game">
-          <div class="word" id="blank" title="Displays the current word with blanks for unguessed letters"></div>
-          <div class="keyboard" id="keyboard" title="Interactive keyboard for letter selection"></div>
+        <p
+          id="message"
+          title="Game status messages (win/lose or other notifications)"
+        ></p>
+        <div class="btnhold">
+          <button
+            id="playAgain"
+            class="playAgain btn1"
+            title="Restart the Hangman game"
+          >
+            Play Again!
+          </button>
+          <button
+            type="button"
+            class="btn1 playAgain"
+            id="hint-btn"
+            title="Get a hint for the current word"
+          >
+            Get Hint <i class="fa-regular fa-lightbulb"></i>
+          </button>
         </div>
-      </div>
-      <p id="message" title="Game status messages (win/lose or other notifications)"></p>
-      <div class="btnhold">
-        <button id="playAgain" class="playAgain btn1" title="Restart the Hangman game">Play Again!</button>
-        <button type="button" class="btn1 playAgain" id="hint-btn" title="Get a hint for the current word">Get Hint <i
-            class="fa-regular fa-lightbulb"></i></button>
-      </div>
-  
-      <div class="streak-container hide">
-        <p class="streakText">Guess Streak</p>
-        <div class="streak">
-          🔥<p class="count">0</p>
-        </div>
-      </div>
-    </div>
-    <div class="pop-up" id="popup">
-      <div class="popup-content">
-        <h2 title="Hint popup header">Hint</h2>
-        <span id="close-hint" class="close" title="Close the hint popup">&times;</span>
-        <p id="output" title="Displays the hint for the current word" class="output synonym"></p>
-        <p id="synonymDis" class="output"></p>
-      </div>
-    </div>
-  
-    <div id="overlay">
-      <div class="loader" title="Loading animation for fetching the word"></div><br>
-      <h4 style="color:#fff">Fetching hardest word from the web...</h4>
-    </div>
-  
-    <div class="blood-splatter"></div>
-    
-    <a href="https://github.com/TheRealSamkit/HangMan_Game" class="love"
-    title="View the Hangman game source code on GitHub" target="_blank">
-    Made by &copy;Samkit Jain
-  </a>
-  </main>
-  <!-- This is made by Samkit Jain -->
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
-  <script src="hang.js" type="module"></script>
-</body>
 
+        <div class="streak-container hide">
+          <p class="streakText">Guess Streak</p>
+          <div class="streak">
+            🔥
+            <p class="count">0</p>
+          </div>
+        </div>
+      </div>
+      <div class="pop-up" id="popup">
+        <div class="popup-content">
+          <h2 title="Hint popup header">Hint</h2>
+          <span id="close-hint" class="close" title="Close the hint popup"
+            >&times;</span
+          >
+          <p
+            id="output"
+            title="Displays the hint for the current word"
+            class="output synonym"
+          ></p>
+          <p id="synonymDis" class="output"></p>
+        </div>
+      </div>
+
+      <div id="overlay">
+        <div
+          class="loader"
+          title="Loading animation for fetching the word"
+        ></div>
+        <br />
+        <h4 style="color: #fff">Fetching hardest word from the web...</h4>
+      </div>
+
+      <div class="blood-splatter"></div>
+
+      <a
+        href="https://github.com/TheRealSamkit/HangMan_Game"
+        class="love"
+        title="View the Hangman game source code on GitHub"
+        target="_blank"
+      >
+        Made by &copy;Samkit Jain
+      </a>
+    </main>
+    <!-- This is made by Samkit Jain -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+    <script src="hang.js" type="module"></script>
+  </body>
 </html>
