@@ -5,26 +5,22 @@ const parameters = `relatedWords?relationshipTypes=synonym&limitPerRelationshipT
 
 const fetchRandomWord = async () => {
     try {
-        const response = await fetch('https://api.api-ninjas.com/v1/randomword?type=noun', {
+        const response = await fetch('https://api.api-ninjas.com/v1/randomword', {
             headers: { 'X-Api-Key': apiKey }
         });
         const { word: [randomWord] } = await response.json();
         return randomWord;
     } catch (error) {
-        console.error('Error fetching random word:', error);
         throw error;
     }
 };
 
 const fetchWikipediaHint = async (word) => {
     try {
-        console.log("Hint was generated from wikipedia");
-
         const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
         const data = await response.json();
         return data.extract || `No hint found on Wikipedia for: ${word}`;
     } catch (error) {
-        console.error('Error fetching Wikipedia hint:', error);
         return `No hint found for: ${word}`;
     }
 };
@@ -38,40 +34,43 @@ const fetchWordnikHint = async (word) => {
             : '';
 
         const finalSynonyms = await fetchSynonyms(word);
-        let finalDefinition = (definition === ''||definition === undefined||definition.length<5) ? await fetchWikipediaHint(word):definition;
+        let finalDefinition = (definition === '' || definition === undefined || definition.length < 5) ? await fetchWikipediaHint(word) : definition;
 
-        if (finalDefinition.includes(":")){
-            finalDefinition=finalDefinition.replace(":",";")
+        if (finalDefinition.includes(":")) {
+            finalDefinition = finalDefinition.replace(":", ";");
         }
         return { definition: finalDefinition, synonyms: finalSynonyms };
 
     } catch (error) {
-        console.error('Error fetching Wordnik hint:', error);
         const fallbackDefinition = await fetchWikipediaHint(word);
         return { definition: fallbackDefinition, synonyms: "No synonyms found." };
     }
 };
-
 const fetchSynonyms = async (word) => {
     try {
         const url = `${base_url}${encodeURIComponent(word)}/${parameters}&${wordNikapikey}`;
-        const synonymResponse = await fetch(url);
+        
+        const synonymResponse = await fetch(url, { method: 'GET' }).catch(() => null); // Prevent console error
 
-        if (!synonymResponse.ok) {
-            throw new Error(`HTTP error! status: ${synonymResponse.status}`);
+        if (!synonymResponse) {
+            return 'No synonyms found.';
+        }
+
+        if (synonymResponse.status === 404 || !synonymResponse.ok) {
+            return 'No synonyms found.';
         }
 
         const synonymData = await synonymResponse.json();
         const synonyms = (synonymData.length > 0 && synonymData[0].words)
             ? synonymData[0].words.join(', ')
             : 'No synonyms found.';
-        
+
         return synonyms;
     } catch (error) {
-        console.error('Error fetching synonyms:', error);
         return 'No synonyms found.';
     }
 };
+
 
 const fetchRandomWordAndHint = async () => {
     try {
@@ -80,7 +79,6 @@ const fetchRandomWordAndHint = async () => {
         const { definition, synonyms } = await fetchWordnikHint(randomWord);
         return { randomWord, definition, synonyms };
     } catch (error) {
-        console.error('Error fetching random word and hint:', error);
         return null;
     }
 };
