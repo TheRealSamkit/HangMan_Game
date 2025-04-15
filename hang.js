@@ -113,6 +113,15 @@ function startGame(mode) {
 	pickWord();
 	con_animation();
 	bounce_effect();
+	document.onkeydown = (e) => {
+		if (alphabets.includes(e.key) && !keysPressed.includes(e.key)) {
+			keysPressed.push(e.key);
+			const element = document.getElementById(`letter-${e.key}`);
+			if (element && !element.disabled) {
+				handleGuess(e.key, element);
+			}
+		}
+	};
 }
 
 async function pickWord() {
@@ -188,6 +197,9 @@ function displayWord() {
 }
 
 function handleGuess(guess, element) {
+	console.log(
+		`Guess: ${guess}, Previous Guess: ${previousGuess},Element: ${element}`
+	);
 	if (previousGuess !== guess) {
 		let guessedCorrectly = false;
 		playSound(click, 0.153);
@@ -504,7 +516,9 @@ function resetGame() {
 		elements.hangmanCanvas.width,
 		elements.hangmanCanvas.height
 	);
-	(correctGuesses = 0), (falseGuess = 8);
+	correctGuesses = 0;
+	falseGuess = 8;
+	keysPressed = [];
 	myScore += 1;
 	previousGuess = "";
 	elements.message.innerHTML = "";
