@@ -197,9 +197,6 @@ function displayWord() {
 }
 
 function handleGuess(guess, element) {
-	console.log(
-		`Guess: ${guess}, Previous Guess: ${previousGuess},Element: ${element}`
-	);
 	if (previousGuess !== guess) {
 		let guessedCorrectly = false;
 		playSound(click, 0.153);
@@ -257,6 +254,7 @@ function endGame(won) {
 		shabash.play();
 		myScore += 200;
 	} else {
+		toggleAnimation();
 		playSound(over, 1);
 		myScore -= 100;
 	}
@@ -274,6 +272,19 @@ function toggleSettings() {
 	}
 	setttingAni();
 	setShow = !setShow;
+}
+
+function toggleAnimation(state) {
+	const element = document.body;
+	if (state) {
+		element.style.animationPlayState = state;
+		return;
+	}
+	if (element.style.animationPlayState === "paused") {
+		element.style.animationPlayState = "running";
+	} else {
+		element.style.animationPlayState = "paused";
+	}
 }
 
 function toggleHint(show) {
@@ -448,7 +459,6 @@ function confettiAnimation() {
 	const duration = 3000;
 	const animationEnd = Date.now() + duration;
 	const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
 	function randomInRange(min, max) {
 		return Math.random() * (max - min) + min;
 	}
@@ -525,6 +535,7 @@ function resetGame() {
 	getbutton = true;
 	elements.keyboard.innerHTML = "";
 	elements.countBox.innerHTML = falseGuess;
+	toggleAnimation("running");
 	pickWord();
 	initializeKeyboard();
 	displayScore(false);
