@@ -149,6 +149,7 @@ body::-webkit-scrollbar {
 
 .settings {
 	position: absolute;
+	cursor: pointer;
 	height: 10rem;
 	width: 2rem;
 	top: 3rem;
@@ -306,6 +307,7 @@ body::-webkit-scrollbar {
 	border-radius: 12px;
 	overflow: hidden;
 	transition: 31ms cubic-bezier(0.5, 0.7, 0.4, 1);
+	cursor: pointer;
 }
 
 .playAgain:before {
